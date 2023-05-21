@@ -13,9 +13,10 @@ datasource db {
 model Users {
   id Int @id @default(autoincrement())
 
-  email     String  @unique
-  hash      String
-  firstName String?
+  email      String  @unique
+  hash       String
+  firstName  String?
+  secondName String?
 
   tasks Tasks[]
 }

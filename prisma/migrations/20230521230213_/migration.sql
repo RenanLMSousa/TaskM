@@ -4,6 +4,7 @@ CREATE TABLE "Users" (
     "email" TEXT NOT NULL,
     "hash" TEXT NOT NULL,
     "firstName" TEXT,
+    "secondName" TEXT,
 
     CONSTRAINT "Users_pkey" PRIMARY KEY ("id")
 );
