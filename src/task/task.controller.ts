@@ -1,15 +1,19 @@
-import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import { Controller, Delete, Get, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { TaskService } from './task.service';
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 
-@Controller('task')
+
+@UseGuards(AuthGuard('jwt-strat'))
+@Controller('tasks')
 export class TaskController {
 
     constructor(private taskService:TaskService){}
 
     @Get()
-    async getTask(){
+    async getTasks(@Req() req : Request){
 
-        return this.taskService.getTask();
+        return this.taskService.getTasks(req.user["id"]);
     }
 
     @Post()
