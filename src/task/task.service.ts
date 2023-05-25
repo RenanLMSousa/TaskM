@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateTaskDto } from './dto';
 
 @Injectable()
 export class TaskService {
@@ -18,10 +19,17 @@ export class TaskService {
         );
     }
 
-    async createTask(){
+    async createTask(userId : number,dto : CreateTaskDto){
+        
+        const task = await this.prismaService.tasks.create({
+            data: {
 
+                userId,
+                ...dto,
+            }
 
-        return "CREATE TASK";
+        })
+        return task;
     }
 
     async deleteTaskById(){

@@ -27,7 +27,9 @@ model Tasks {
   title       String
   description String?
 
-  usersId Int
+  dueDate String?
 
-  Users Users? @relation(fields: [usersId], references: [id])
+  userId Int
+
+  Users Users? @relation(fields: [userId], references: [id])
 }

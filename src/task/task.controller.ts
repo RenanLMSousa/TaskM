@@ -1,7 +1,9 @@
-import { Controller, Delete, Get, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
+import { CreateTaskDto } from './dto';
+import { debug } from 'console';
 
 
 @UseGuards(AuthGuard('jwt-strat'))
@@ -17,8 +19,8 @@ export class TaskController {
     }
 
     @Post()
-    async createTask(){
-        return this.taskService.createTask();
+    async createTask(@Req() req: Request,@Body() dto:CreateTaskDto ){
+        return this.taskService.createTask(req.user["id"] , dto);
     }
     @Delete()
     async deleteTaskById(){
