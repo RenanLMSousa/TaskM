@@ -1,6 +1,8 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTaskDto } from './dto';
+import { EditTaskDto } from './dto/edit-task.dto';
+import { domainToASCII } from 'url';
 
 @Injectable()
 export class TaskService {
@@ -69,8 +71,33 @@ export class TaskService {
         );
     }
 
-    async editTaskById(){
-        return "EDIT TASK BY ID";
+    async editTaskById(userId: number, taskId : number, dto : EditTaskDto)
+    {
+        const task = await this.prismaService.tasks.findUnique({
+            where:{
+
+                id:taskId,
+            }
+
+        });
+
+        if(!task || task.userId != userId){
+            throw new ForbiddenException(
+                'Access to resources denied',
+              );
+        }
+        console.log(dto);
+        return this.prismaService.tasks.update({
+            where:{
+                id:taskId,
+            },
+            data:{
+                ...dto,
+
+            },
+
+        });
+
     }
 
 }

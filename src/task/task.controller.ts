@@ -4,6 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { CreateTaskDto } from './dto';
 import { debug } from 'console';
+import { EditTaskDto } from './dto/edit-task.dto';
 
 
 @UseGuards(AuthGuard('jwt-strat'))
@@ -34,9 +35,10 @@ export class TaskController {
         return this.taskService.getTaskById(req.user["id"] , taskId);
     }
 
-    @Patch()
-    async editTaskById(){
-        return this.taskService.editTaskById();
+    @Patch(":id")
+    async editTaskById(@Req() req : Request , @Param('id' , ParseIntPipe) taskId: number, @Body() dto : EditTaskDto){
+
+        return this.taskService.editTaskById(req.user["id"],taskId,dto);
     }
 
 }
