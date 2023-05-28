@@ -29,9 +29,9 @@ export class TaskController {
     }
 
 
-    @Get()
-    async getTaskById(){
-        return this.taskService.getTaskById();
+    @Get(":id")
+    async getTaskById(@Req() req: Request,@Param('id', ParseIntPipe) taskId: number ){
+        return this.taskService.getTaskById(req.user["id"] , taskId);
     }
 
     @Patch()

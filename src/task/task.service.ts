@@ -57,8 +57,16 @@ export class TaskService {
         return "TASK DELETED";
     }
 
-    async getTaskById(){
-        return "GET TASK BY ID";
+    async getTaskById(userId : number, taskId : number){
+        return this.prismaService.tasks.findFirst(
+            {
+                where:{
+                    id : taskId,
+                    userId
+                }
+
+            }
+        );
     }
 
     async editTaskById(){
