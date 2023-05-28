@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTaskDto } from './dto';
 
@@ -32,8 +32,29 @@ export class TaskService {
         return task;
     }
 
-    async deleteTaskById(){
-        return "DELETE TASK BY ID";
+    async deleteTaskById(userId : number, taskId : number){
+        const task = await this.prismaService.tasks.findUnique({
+            where:{
+                id: taskId,
+                       }
+
+        });
+
+        if(!task || task.userId != userId){
+
+            throw new ForbiddenException(
+                'Access to resources denied',
+              );
+        
+        }
+        await this.prismaService.tasks.delete(
+            {
+                where:{
+                    id: taskId,
+                }
+            }
+        );
+        return "TASK DELETED";
     }
 
     async getTaskById(){

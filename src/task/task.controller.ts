@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
@@ -22,10 +22,12 @@ export class TaskController {
     async createTask(@Req() req: Request,@Body() dto:CreateTaskDto ){
         return this.taskService.createTask(req.user["id"] , dto);
     }
-    @Delete()
-    async deleteTaskById(){
-        return this.taskService.deleteTaskById();
+    @HttpCode(HttpStatus.NO_CONTENT)
+    @Delete(":id")
+    async deleteTaskById(@Req() req: Request,@Param('id', ParseIntPipe) taskId: number ){
+        return this.taskService.deleteTaskById(req.user["id"], taskId);
     }
+
 
     @Get()
     async getTaskById(){
